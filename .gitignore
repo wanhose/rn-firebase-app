@@ -60,3 +60,4 @@ buck-out/
 
 # Private files
 /src/data
+/android/app/google-services.json

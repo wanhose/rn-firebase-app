@@ -1,12 +1,6 @@
 import React from 'react'
-import { Container } from 'native-base'
+import Navigation from '../Navigation/Navigation'
 
-const App = () => {
-  return (
-    <Container>
-      
-    </Container>
-  )
-}
+const App = () => <Navigation/>
 
 export default App
