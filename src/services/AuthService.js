@@ -1,4 +1,4 @@
-import { GoogleSignin, statusCodes } from '@react-native-community/google-signin'
+import { GoogleSignin } from '@react-native-community/google-signin'
 import { firebase } from '@react-native-firebase/auth'
 
 const AuthService = {

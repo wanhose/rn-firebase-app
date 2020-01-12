@@ -7,7 +7,10 @@ const GlobalProvider = (props) => {
     const [user, setUser] = useState(null)
 
     return (
-        <GlobalContext.Provider value = {{ initializing, user, setInitializing, setUser }}>
+        <GlobalContext.Provider value = {{ 
+                initializing, setInitializing,
+                user, setUser 
+            }}>
             { props.children }
         </GlobalContext.Provider>
     )

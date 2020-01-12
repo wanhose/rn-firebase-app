@@ -1,11 +1,11 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import { Actions } from 'react-native-router-flux'
-import { Container, Content, Icon } from 'native-base'
 import { TaskList } from '../components/Lists/Lists'
 import Fab from '../components/Fab/Fab'
+import { CreateTaskModal, EditTaskModal } from '../components/Modals/Modals'
 import { GlobalContext } from '../contexts/GlobalContext'
-import TaskService from '../services/TaskService'
+import { InAppProvider } from '../contexts/InAppContext'
 
 const HomeScreen = () => {
     let { user } = useContext(GlobalContext)
@@ -17,16 +17,15 @@ const HomeScreen = () => {
     }, [])
 
     return (
-        <Container>
-            <Content contentContainerStyle = { styles.content }>
+        <View style = { styles.content }>
+            <InAppProvider>
                 <Profile/>
                 <List/>
-                <Fab
-                    color = '#00e6ec'
-                    icon = { <Icon name = 'add'/> }
-                    onPress = {() => TaskService.add(Math.random(20).toString())}/>
-            </Content>
-        </Container>
+                <Fab/>
+                <CreateTaskModal/>
+                <EditTaskModal/>
+            </InAppProvider>
+        </View>
     )
 }
 
