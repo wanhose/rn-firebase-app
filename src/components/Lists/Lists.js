@@ -1,7 +1,8 @@
-import React, { useEffect, useReducer, useState } from 'react'
+import React, { useContext, useEffect, useReducer, useState } from 'react'
 import firestore from '@react-native-firebase/firestore'
-import { FlatList, StyleSheet, Text } from 'react-native'
-import { CheckBox, ListItem } from 'native-base'
+import { FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { CheckBox } from 'native-base'
+import { InAppContext } from '../../contexts/InAppContext'
 import TaskService from '../../services/TaskService'
 
 const taskReducer = (state, action) => {
@@ -13,7 +14,7 @@ const taskReducer = (state, action) => {
     }
 }
 
-const TaskList = (props) => {
+const TaskList = () => {
     const [tasks, dispatch] = useReducer(taskReducer, [])
 
     useEffect(() => {
@@ -46,29 +47,50 @@ const TaskList = (props) => {
 }
 
 const TaskListItem = (props) => {
+    const [isWaiting, setIsWaiting] = useState(false)
+    let { setIsEditModalOpen, taskToEdit, setTaskToEdit } = useContext(InAppContext)
+
+    const _onItemLongPress = () => {
+        setTaskToEdit(props)
+        if (taskToEdit !== null) {
+            setIsEditModalOpen(true)
+        }
+    }
+
+    const _onItemPress = () => {
+        setIsWaiting(true)
+        TaskService.update(props.id, { done: !props.done })
+            .finally(() => {
+                setIsWaiting(false)
+            })
+    }
+
     return (
-        <ListItem 
-            noBorder
-            noIndent
-            onPress = {() => TaskService.update(props.id, { done: !props.done })}
-            style = { styles.item }>
+        <TouchableOpacity
+            disabled = { isWaiting }
+            onLongPress = { !props.done ? _onItemLongPress : null }
+            onPress = { _onItemPress }
+            style = { styles.itemContainer }>
             <CheckBox 
                 checked = { props.done }
-                color = 'turquoise'
+                color = { props.done ? 'turquoise' : 'lightgray' }
                 style = { styles.checkBox }/>
-            <Text style = {{ ...styles.itemText, textDecorationLine: props.done ? 'line-through' : 'none' }}>{ props.description }</Text>
-        </ListItem>
+            <Text numberOfLines = { 1 } style = {{ ...styles.itemText, textDecorationLine: props.done ? 'line-through' : 'none' }}>{ props.description }</Text>
+        </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
-    item: {
-        marginVertical: 5
+    itemContainer: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        paddingVertical: 20
     },
     itemText: {
         color: '#fff',
-        fontSize: 14,
-        marginLeft: 10
+        fontSize: 16,
+        paddingLeft: 20,
+        paddingRight: 25
     },
     list: {
         flex: 1

@@ -1,22 +1,17 @@
 import React, { useContext, useEffect } from 'react'
-import { firebase } from '@react-native-firebase/auth'
+import auth from '@react-native-firebase/auth'
 import { StatusBar, StyleSheet, View } from 'react-native'
 import Navigation from '../Navigation/Navigation'
 import { GlobalContext } from '../../contexts/GlobalContext'
 
 const App = () => {
-    let { initializing, setInitializing, setUser } = useContext(GlobalContext)
+    let { setUser } = useContext(GlobalContext)
 
     useEffect(() => {
-        const subscriber = firebase.auth().onAuthStateChanged(_onAuthStateChanged)
-        
-        return subscriber
+        auth().onAuthStateChanged(user => {
+            setUser(user)
+        })
     }, [])
-
-    const _onAuthStateChanged = (user) => {
-        setUser(user)
-        initializing ? setInitializing(false) : null
-    }
 
     return (
         <View style = { styles.root }>
@@ -24,6 +19,7 @@ const App = () => {
             <Navigation/>
         </View>
     )
+
 }
 
 const styles = StyleSheet.create({

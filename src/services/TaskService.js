@@ -1,17 +1,17 @@
-import firestore from '@react-native-firebase/firestore'
+import firestore, { firebase } from '@react-native-firebase/firestore'
 
 const ref = firestore().collection('tasks')
 
 const TaskService = {
-    add(description) {
-        ref.add({
+    async add(description) {
+        await ref.add({
             created_at: new Date(),
             description: description,
             done: false
         })
     },
-    update(id, data) {
-        ref.doc(id)
+    async update(id, data) {
+        await ref.doc(id)
             .update(data)
     }
 }
