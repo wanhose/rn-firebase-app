@@ -16,4 +16,4 @@ npx react-native run-android
 Not tested yet.
 
 ## Quickly demo
-Not demo created yet.
+![](docs/demo.gif)
