@@ -8,7 +8,7 @@ import GoogleLogo from '../assets/images/google-g-logo.png'
 
 const AuthScreen = () => {
     const [isWaiting, setIsWaiting] = useState(false)
-    let { user, setUser } = useContext(GlobalContext)
+    let { user } = useContext(GlobalContext)
 
     useEffect(() => {
         if (user !== null) {
@@ -22,11 +22,10 @@ const AuthScreen = () => {
         AuthService.login()
             .then(user => {
                 if (user !== null) {
-                    setUser(user)
                     Actions.replace('home')
-                } else {
-                    setIsWaiting(false)
                 }
+            }).catch(error => {
+                setIsWaiting(false)
             })
     }
 
@@ -35,10 +34,8 @@ const AuthScreen = () => {
             <Content
                 contentContainerStyle = { styles.root }
                 padder>
-                <View>
-                    <Text style = {{ ...styles.text, ...styles.white }}>CLOUD</Text>
-                    <Text style = {{ ...styles.text, ...styles.turquoise }}>DISTRICT</Text>
-                </View>
+                <Text style = {{ ...styles.text, ...styles.white }}>CLOUD</Text>
+                <Text style = {{ ...styles.text, ...styles.turquoise }}>DISTRICT</Text>
                 <View style = { styles.button }>
                     <Button
                         bordered

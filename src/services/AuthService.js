@@ -1,7 +1,6 @@
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin'
 import { firebase } from '@react-native-firebase/auth'
 
-
 const AuthService = {
     async login() {
         let credential = null
@@ -13,7 +12,7 @@ const AuthService = {
             })
             .catch(error => {
                 console.log(error)
-                return null
+                return error
             })
 
         await GoogleSignin.getTokens()
@@ -21,11 +20,10 @@ const AuthService = {
                 credential = firebase.auth.GoogleAuthProvider.credential(credentials.idToken, credentials.accessToken)
             })
 
-
         await firebase.auth().signInWithCredential(credential)
             .catch(error => {
                 console.log(error)
-                return null
+                return error
             })
 
         return user
